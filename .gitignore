@@ -43,3 +43,7 @@ Thumbs.db
 
 .nx/cache
 .nx/workspace-data
+
+# Environment files
+src/environments/*
+!src/environments/environment.example.ts

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +10,10 @@ import { RouterOutlet } from '@angular/router';
   styles: [],
 })
 export class AppComponent {
+  private authService = inject(AuthService);
   title = 'spotify-app';
+
+  constructor() {
+    this.authService.getAccessToken().subscribe();
+  }
 }
