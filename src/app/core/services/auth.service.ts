@@ -5,7 +5,7 @@ import { tap } from 'rxjs';
 import { environment } from '@env/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private http = inject(HttpClient);
@@ -20,16 +20,18 @@ export class AuthService {
   getAccessToken() {
     const body = new URLSearchParams();
     body.set('grant_type', 'client_credentials');
-    return this.http.post(this.apiTokenUrl, body, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `Basic ${btoa(`${this.clientId}:${this.clientSecret}`)}`
-      }
-    }).pipe(
-      tap((response: any) => {
-        this.access_token = response.access_token;
-        this.token_expires_in = response.expires_in;
+    return this.http
+      .post(this.apiTokenUrl, body, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Authorization: `Basic ${btoa(`${this.clientId}:${this.clientSecret}`)}`,
+        },
       })
-    );
+      .pipe(
+        tap((response: any) => {
+          this.access_token = response.access_token;
+          this.token_expires_in = response.expires_in;
+        }),
+      );
   }
 }

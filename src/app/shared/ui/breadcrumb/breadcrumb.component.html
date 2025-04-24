@@ -1,0 +1,21 @@
+@if (pathSegments.length > 0) {
+  <nav class="text-sm text-gray-500">
+    <span>
+      <a routerLink="/" class="hover:text-gray-300">Home</a>
+    </span>
+    @for (segment of pathSegments; track $index) {
+      <span> / </span>
+      @if ($index < pathSegments.length - 1) {
+        @if (buildLink($index)) {
+          <a [routerLink]="buildLink($index)" class="hover:text-gray-300">
+            {{ segment }}
+          </a>
+        } @else {
+          <span>{{ segment }}</span>
+        }
+      } @else {
+        <span class="text-gray-300">{{ segment }}</span>
+      }
+    }
+  </nav>
+}
