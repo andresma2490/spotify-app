@@ -1,0 +1,18 @@
+@if (user_access_token) {
+  <a [routerLink]="['/users', 'playlists']" class="hover:text-gray-300 sm:px-4">
+    profile
+  </a>
+  <button
+    (click)="logout()"
+    class="px-4 py-2 text-sm bg-red-500 rounded-md hover:bg-red-600"
+  >
+    logout
+  </button>
+} @else {
+  <button
+    class="px-4 py-2 text-sm bg-green-500 rounded-md hover:bg-green-600"
+    (click)="login()"
+  >
+    login
+  </button>
+}

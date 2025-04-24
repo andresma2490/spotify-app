@@ -20,4 +20,12 @@ export class SpotifyService {
   getAlbumSongs(albumId: string) {
     return this.http.get(`${this.apiUrl}/albums/${albumId}/tracks`);
   }
+
+  getUserPlaylists() {
+    return this.http.get(`${this.apiUrl}/me/playlists`);
+  }
+
+  getPlaylistTracks(playlistId: string) {
+    return this.http.get(`${this.apiUrl}/playlists/${playlistId}/tracks`);
+  }
 }

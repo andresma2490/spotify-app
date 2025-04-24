@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { artistsRoutes } from './views/artists/artists.routes';
+import { usersRoutes } from './views/users/users.routes';
 
 export const routes: Routes = [
   {
@@ -11,5 +12,9 @@ export const routes: Routes = [
   {
     path: 'artists',
     children: artistsRoutes,
+  },
+  {
+    path: 'users',
+    children: usersRoutes,
   },
 ];

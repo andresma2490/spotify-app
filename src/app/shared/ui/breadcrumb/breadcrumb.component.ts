@@ -25,7 +25,7 @@ export class BreadcrumbComponent implements OnInit {
 
   buildLink(index: number): string[] | null {
     const link = ['/'];
-    const noLinksList = ['artists', 'albums'];
+    const noLinksList = ['artists', 'albums', 'users'];
     if (noLinksList.includes(this.pathSegments[index])) {
       return null;
     }

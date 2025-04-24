@@ -15,7 +15,10 @@ export class AuthService {
   private clientSecret = environment.clientSecret;
 
   public access_token: string | null = null;
-  public token_expires_in: number | null = null;
+
+  public user_access_token: string | null = null;
+  public user_refresh_token: string | null = null;
+  public user_token_expires_in: number | null = null;
 
   getAccessToken() {
     const body = new URLSearchParams();
@@ -30,7 +33,32 @@ export class AuthService {
       .pipe(
         tap((response: any) => {
           this.access_token = response.access_token;
-          this.token_expires_in = response.expires_in;
+          localStorage.setItem('access_token', this.access_token || '');
+        }),
+      );
+  }
+
+  login(code: string) {
+    const body = new URLSearchParams();
+    body.set('grant_type', 'authorization_code');
+    body.set('code', code);
+    body.set('redirect_uri', environment.redirectUri);
+    return this.http
+      .post(this.apiTokenUrl, body, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Authorization: `Basic ${btoa(`${this.clientId}:${this.clientSecret}`)}`,
+        },
+      })
+      .pipe(
+        tap((response: any) => {
+          this.user_access_token = response.access_token;
+          this.user_refresh_token = response.refresh_token;
+          this.user_token_expires_in = response.expires_in;
+
+          this.access_token = this.user_access_token;
+          localStorage.setItem('access_token', this.access_token || '');
+          localStorage.setItem('user_access_token', this.access_token || '');
         }),
       );
   }
