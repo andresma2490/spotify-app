@@ -1,20 +1,23 @@
-import { Component } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '@app/core/services/auth.service';
 import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, AsyncPipe],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
+  private authService = inject(AuthService);
   private authUrl = 'https://accounts.spotify.com/authorize';
   private clientId = environment.clientId;
   private redirectUri = environment.redirectUri;
 
-  user_access_token: string | null = localStorage.getItem('user_access_token');
+  user_access_token$ = this.authService.user_access_token$;
 
   login() {
     const scope = 'user-read-private user-read-email playlist-read-private';
@@ -29,8 +32,6 @@ export class LoginComponent {
   }
 
   logout() {
-    localStorage.removeItem('user_access_token');
-    this.user_access_token = null;
-    window.location.href = '/';
+    this.authService.logout();
   }
 }

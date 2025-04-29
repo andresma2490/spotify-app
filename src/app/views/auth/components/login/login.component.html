@@ -1,4 +1,4 @@
-@if (user_access_token) {
+@if (user_access_token$ | async) {
   <a [routerLink]="['/users', 'playlists']" class="hover:text-gray-300 sm:px-4">
     profile
   </a>

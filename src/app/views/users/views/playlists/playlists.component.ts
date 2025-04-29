@@ -18,7 +18,6 @@ export class PlaylistsComponent implements OnInit {
 
   ngOnInit(): void {
     this.spotifyService.getUserPlaylists().subscribe((playlists: any) => {
-      console.log(playlists);
       this.playlists = playlists.items;
     });
   }

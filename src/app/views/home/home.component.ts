@@ -29,8 +29,4 @@ export class HomeComponent implements OnInit {
         });
       });
   }
-
-  selectArtist(id: string, name: string) {
-    console.log(id, name);
-  }
 }

@@ -7,9 +7,10 @@ import { catchError, switchMap, throwError } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
-  const access_token = localStorage.getItem('access_token');
-  const addAccessToken = () => {
-    return authService.getAccessToken().pipe(
+  const access_token = authService.getAccessToken();
+
+  const fetchAccessToken = () => {
+    return authService.fetchAccessToken().pipe(
       switchMap((res) => {
         const reqWithAuth = req.clone({
           setHeaders: {
@@ -24,7 +25,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   if (!req.url.startsWith(`${environment.apiUrl}`)) {
     return next(req);
   }
-  console.log(access_token);
+
   if (access_token) {
     const reqWithAuth = req.clone({
       setHeaders: {
@@ -34,12 +35,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return next(reqWithAuth).pipe(
       catchError((error) => {
         if (error.status === 401) {
-          return addAccessToken();
+          return fetchAccessToken();
         }
         return throwError(() => error);
       }),
     );
   }
 
-  return addAccessToken();
+  return fetchAccessToken();
 };

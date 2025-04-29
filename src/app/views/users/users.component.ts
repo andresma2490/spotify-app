@@ -16,7 +16,13 @@ export class UsersComponent implements OnInit {
   code: string | null = null;
 
   ngOnInit(): void {
+    const currentUrl = this.router.url;
     this.code = this.route.snapshot.queryParamMap.get('code');
+
+    if (currentUrl === '/users' && !this.code) {
+      this.router.navigate(['/']);
+    }
+
     if (this.code) {
       this.authService.login(this.code).subscribe(() => {
         this.router.navigate(['/users/playlists']);
